@@ -1,67 +1,119 @@
-# This repository contains a Kaggle Notebook that demonstrates training and evaluating the YOLOv8 object detection model for 10 epochs on a custom dataset. The workflow is tailored for medical imaging applications, such as diabetic retinopathy detection, but the structure can be adapted to any binary or multi-class classification problem.
+# Integrating YOLOv10 and Dual-Head Inference for Automated Diabetic Retinopathy Diagnosis
 
-# Key Features
-Dataset Integration:
-Imports and processes a dataset (e.g., dataset12) from Kaggle’s storage for training and evaluation.
+<p align="center">
+  <strong>IEEE 2nd International Conference on Computing, Applications and Systems (COMPAS 2025)</strong>
+</p>
 
-# YOLOv8 Implementation:
-Utilizes the cutting-edge YOLOv8 model, known for its speed and accuracy in object detection tasks.
+<p align="center">
+  <img src="https://img.shields.io/badge/IEEE-Published-blue?style=for-the-badge&logo=ieee" />
+  <img src="https://img.shields.io/badge/Domain-Medical%20AI-red?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Model-YOLOv10-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Computer-Vision-purple?style=for-the-badge" />
+</p>
 
-# Training Workflow:
-Trains the model for 10 epochs, tracking loss and performance metrics to monitor improvement over time.
+## 📌 Overview
 
-# Model Evaluation:
-Includes validation and testing stages, generating performance metrics such as accuracy, precision, recall, and loss curves.
+This repository contains the implementation of our research paper, **"Integrating YOLOv10 and Dual-Head Inference for Automated Diabetic Retinopathy Diagnosis,"** published at the IEEE 2nd International Conference on Computing, Applications and Systems (COMPAS 2025).
 
-# Customizable Design:
-The notebook structure is modular, enabling users to modify the dataset, number of epochs, augmentation strategies, and evaluation metrics easily.
+Diabetic Retinopathy (DR) is a diabetes-related eye disease that can lead to vision impairment and blindness if not detected early.
 
-# Kaggle Integration:
-Designed for seamless execution on Kaggle, benefiting from GPU/TPU resources and built-in data management features.
+This research proposes an automated diabetic retinopathy detection framework integrating **YOLOv10 with a dual-head inference architecture** to identify DR-related retinal abnormalities and distinguish between diabetic retinopathy (DR) and non-diabetic retinopathy (No-DR).
 
-Typical Workflow Outline
-Dataset Preparation
+The proposed framework uses a custom-annotated retinal fundus image dataset prepared and augmented using Roboflow. It combines lesion detection, feature extraction, and classification to support automated retinal image analysis.
 
-Load dataset using Kaggle’s input interface.
+## 🎯 Research Objectives
 
-Apply preprocessing as required (resizing, normalization).
+- Develop an automated diabetic retinopathy detection framework using YOLOv10.
+- Integrate dual-head inference for improved detection and classification.
+- Identify diabetic retinopathy-related abnormalities in retinal fundus images.
+- Support binary classification (DR vs. No-DR).
+- Explore multiclass classification based on DR severity.
+- Improve detection performance through image preprocessing, annotation, and data augmentation.
+- Evaluate the model using precision, recall, accuracy, and mean Average Precision (mAP).
 
-Model Configuration
+## 🧠 Proposed Methodology
 
-Import and configure YOLOv8 for binary or multi-class detection.
+The proposed framework integrates YOLOv10's object detection capabilities with a dual-head architecture.
 
-Specify hyperparameters (epochs, batch size, learning rate, etc.).
+### Key Components
 
-Training
+**1. YOLOv10 Architecture**
 
-Run training script for 10 epochs.
+The model uses an enhanced Cross Stage Partial Network (CSPNet) for feature extraction and a Path Aggregation Network (PAN) for feature fusion.
 
-Monitor and log training and validation metrics.
+**2. Dual-Head Inference**
 
-Evaluation
+The architecture incorporates:
 
-Assess model on validation/test sets.
+- One-to-many training to learn richer lesion-level representations.
+- One-to-one inference for efficient and accurate predictions.
+- NMS-free inference to reduce redundant predictions.
+- Lightweight classification heads for efficient output generation.
 
-Output detailed metrics and, if applicable, visualizations of predictions.
+**3. Dataset Annotation and Augmentation**
 
-Export & Deployment
+Roboflow is used to annotate retinal fundus images and prepare the dataset. Preprocessing and augmentation techniques include:
 
-Save trained models and prediction outputs to Kaggle’s working directory for download or further use.
+- Image resizing and auto-orientation.
+- Flipping and cropping.
+- Rotation.
+- Noise addition.
 
-Usage
-Upload the notebook to your Kaggle environment.
+## 🔄 System Workflow
 
-Select or upload your dataset.
+```text
+Retinal Fundus Images
+          |
+          v
+   Dataset Collection
+          |
+          v
+  Annotation using Roboflow
+          |
+          v
+ Image Preprocessing
+          |
+          v
+  Data Augmentation
+          |
+          v
+   Dataset Splitting
+          |
+          v
+    YOLOv10 Model
+          |
+          v
+  Dual-Head Inference
+          |
+          v
+  Lesion Detection and
+     Classification
+          |
+          v
+      Final Output
+       /       \
+      v         v
+     DR       No-DR
+```
 
-Adjust configuration cells as needed.
+## 📊 Dataset Description
 
-Run all cells to train and evaluate the YOLOv8 model.
+The study uses a custom-annotated retinal fundus image dataset containing 9,600 images.
 
-Results and logs are stored in the /kaggle/working output directory.
+| Class | Total Images | Training | Testing | Validation |
+|---|---:|---:|---:|---:|
+| Diabetic Retinopathy (DR) | 4,800 | 4,200 | 200 | 400 |
+| No Diabetic Retinopathy (No-DR) | 4,800 | 4,200 | 200 | 400 |
+| **Total** | **9,600** | **8,400** | **400** | **800** |
 
-# Notes
-This notebook provides a solid starting point for YOLO-based experiments, especially for those new to object detection or seeking a fast setup for rapid prototyping.
+### Dataset Distribution
 
-For best results, adjust the number of epochs and augmentations based on your dataset size and complexity.
+- Training: 88%
+- Testing: 4%
+- Validation: 8%
 
-The modular format allows easy extension for longer training, additional evaluation, or integration with other models.
+### Classification Categories
+
+The research describes a hierarchical classification structure:
+
+**Binary
